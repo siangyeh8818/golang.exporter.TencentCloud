@@ -1,4 +1,4 @@
-package main
+package tencentcloud
 
 import (
 	"fmt"
@@ -84,11 +84,3 @@ func callAPI(GETobject string) float64 {
 		return balanceResulta
 	}
 }
-
-/*
-func GatherBalance(response *billing.DescribeAccountBalanceResponse) float64 {
-	response.Response.Balance
-
-	return float64()
-}
-*/

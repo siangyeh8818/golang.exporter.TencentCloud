@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	export "github.com/siangyeh8818/golang.exporter.TencentCloud/internal"
+	export "github.com/siangyeh8818/golang.exporter.TencentCloud/internal/server"
 
 )
 
