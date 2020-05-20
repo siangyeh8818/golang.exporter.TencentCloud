@@ -1,4 +1,4 @@
-module github.com/siangyeh8818/golang.exporter.TencentCloud
+module github.com/siangyeh8818/golang.exporter.tencentCloud
 
 go 1.14
 

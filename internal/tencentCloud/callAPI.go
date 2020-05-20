@@ -57,6 +57,8 @@ func callAPI(GETobject string) float64 {
 	//request := cvm.NewDescribeInstancesRequest()
 
 	switch GETobject {
+	default: 
+		return 0.0
 	case "AccountBalance":
 		billingclient, _ := billing.NewClient(credential, regions.Guangzhou, cpf)
 		// 实例化一个请求对象，根据调用的接口和实际情况，可以进一步设置请求参数
@@ -70,7 +72,7 @@ func callAPI(GETobject string) float64 {
 
 		if _, ok := err.(*errors.TencentCloudSDKError); ok {
 			fmt.Printf("An API error has returned: %s", err)
-			return 0
+			return 0.0
 		}
 
 		if err != nil {
@@ -79,7 +81,8 @@ func callAPI(GETobject string) float64 {
 
 		fmt.Printf("%s", balanceResponse.ToJsonString())
 		fmt.Println("--------Balance----------")
-		balanceResulta := float64(*(balanceResponse.Response.Balance)) / 100
+		var balanceResulta float64
+		balanceResulta = float64(*(balanceResponse.Response.Balance)/100)
 		fmt.Println(balanceResulta)
 		return balanceResulta
 	}
