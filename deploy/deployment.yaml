@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tencentcloud-exporter
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: tencentcloud-exporter
+    spec:
+      containers:
+      - name: tencentcloud-exporter
+        image: siangyeh8818/tencentcloud-exporter:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8081
+          protocol: TCP
+        env:
+        - name: TENCENTCLOUD_SECRET_ID
+          value: "INPUT YOUR ID"
+        - name: TENCENTCLOUD_SECRET_KEY
+          value: "INPUT YOUR KEY"
