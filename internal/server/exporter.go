@@ -64,7 +64,6 @@ func NewExporter(metricsPrefix string) *Exporter {
 }
 
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
-	//e.gauge.Set(float64(100))
 
 	e.account_balance.Set(tencentcloud.callAPI("AccountBalance"))
 	//e.gaugeVec.WithLabelValues("hello").Set(float64(0))
