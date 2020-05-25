@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: tencentcloud-exporter
-        image: siangyeh8818/tencentcloud-exporter:1.0
+        image: siangyeh8818/tencentcloud-exporter:1.1
         imagePullPolicy: Always
         ports:
         - containerPort: 8081
