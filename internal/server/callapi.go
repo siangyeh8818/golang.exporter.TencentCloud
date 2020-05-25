@@ -2,7 +2,10 @@ package server
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
@@ -10,8 +13,22 @@ import (
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/regions"
 
 	// cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
+	tool "github.com/siangyeh8818/golang.exporter.tencentcloud/internal/tool"
 	billing "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/billing/v20180709"
 )
+
+func Handler_API() {
+	log.Println("---------------------Handler_API()---------------------")
+	for {
+		balance := callAPI("AccountBalance")
+		log.Println("---------------------write balance tp out.csv---------------------")
+		strbalance := strconv.FormatFloat(balance, 'E', -1, 64)
+		tool.WriteWithIoutil("output.csv", strbalance)
+		internal_time, _ := time.ParseDuration(os.Getenv("GET_API_INTERNAL_TIME"))
+		//internal_time, _ := strconv.Atoi(os.Getenv("SELEIUM_INTERNAL_TIME"))
+		time.Sleep(time.Duration(internal_time))
+	}
+}
 
 func callAPI(GETobject string) float64 {
 

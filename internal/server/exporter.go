@@ -1,8 +1,14 @@
 package server
 
 import (
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -65,7 +71,7 @@ func NewExporter(metricsPrefix string) *Exporter {
 
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
-	e.account_balance.Set(callAPI("AccountBalance"))
+	e.account_balance.Set(GetCsvContent("output.csv"))
 	//e.gaugeVec.WithLabelValues("hello").Set(float64(0))
 	e.account_balance.Collect(ch)
 	//e.gaugeVec.Collect(ch)
@@ -75,4 +81,44 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	e.account_balance.Describe(ch)
+}
+
+func GetCsvContent(filepath string) float64 {
+	for !Exists(filepath) {
+		log.Println("-----wait for xzcom-exporter to write output.csv'")
+		time.Sleep(1 * time.Second)
+	}
+
+	fin, err := os.Open(filepath)
+	if err != nil {
+		panic(err)
+	}
+	defer fin.Close()
+
+	bytes, err := ioutil.ReadAll(fin)
+	if err != nil {
+		panic(err)
+	}
+	csccontent := string(bytes)
+	fmt.Println(csccontent)
+	csccontent = strings.Replace(csccontent, ",", "", -1)
+	csccontent = strings.Replace(csccontent, "\n", "", -1)
+	csccontent = strings.Replace(csccontent, "\r", "", -1)
+	csccontent = strings.Trim(csccontent, "\"")
+	downloadcount, err := strconv.ParseFloat(csccontent, 64)
+	if err != nil {
+		panic(err)
+	}
+	log.Println("------downloadcount------")
+	log.Println(downloadcount)
+	return downloadcount
+}
+
+func Exists(name string) bool {
+	if _, err := os.Stat(name); err != nil {
+		if os.IsNotExist(err) {
+			return false
+		}
+	}
+	return true
 }

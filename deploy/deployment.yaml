@@ -27,3 +27,6 @@ spec:
           value: "INPUT YOUR ID"
         - name: TENCENTCLOUD_SECRET_KEY
           value: "INPUT YOUR KEY"
+        - name: GET_API_INTERNAL_TIME
+          value: "180m"
+
